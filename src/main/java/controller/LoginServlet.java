@@ -18,7 +18,6 @@ import service.StudentService;
 import util.PasswordHasher;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -55,7 +54,6 @@ public class LoginServlet extends HttpServlet {
                 Student student = studentService.getStudentByAccountId(accountId);
                 HttpSession session = request.getSession();
                 session.setAttribute("student", student);
-
                 response.sendRedirect("student_courses");
             } else {
                 Instructor instructor = instructorService.getInstructorByAccountId(accountId);

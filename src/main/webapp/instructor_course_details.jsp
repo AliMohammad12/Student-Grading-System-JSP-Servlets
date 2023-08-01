@@ -28,6 +28,13 @@
 
 
 <%
+    response.setHeader("Cache-Control", "no-cache");
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+    if (session.getAttribute("instructor") == null) {
+        response.sendRedirect("login");
+    } else {
     List<ConnectionUrlParser.Pair<ConnectionUrlParser.Pair<String, Integer>, Student>>
             studentListWithMarks  = (List<ConnectionUrlParser.Pair<ConnectionUrlParser.Pair<String, Integer>, Student>>)
             request.getAttribute("studentListWithMarks");
@@ -108,7 +115,7 @@
         </div>
     </div>
 </section>
-
+<% }%>
 
 </body>
 </html>

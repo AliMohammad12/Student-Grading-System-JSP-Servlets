@@ -68,8 +68,6 @@ public class RegisterServlet extends HttpServlet {
             int academicYear = Integer.parseInt(request.getParameter("studentAcademicYear"));
             Student student = new Student(firstName, lastName, major, academicYear, email, accountId);
             registerStudent(student);
-//          out.println(firstName + " " + lastName + "   " + major + " " + academicYear);
-//          out.println(email + " " + password + " " + role);
         } else {
             String firstName = request.getParameter("instructorFirstName");
             String lastName = request.getParameter("instructorLastName");
@@ -77,8 +75,6 @@ public class RegisterServlet extends HttpServlet {
             Department department = departmentService.getDepartmentByName(departmentName);
             Instructor instructor = new Instructor(firstName, lastName, department, email, accountId);
             registerInstructor(instructor);
-//          out.println(firstName + " " + lastName + "   " + departmentName);
-//          out.println(email + " " + password + " " + role);
         }
 
         request.getRequestDispatcher("/login_page.jsp").forward(request, response);

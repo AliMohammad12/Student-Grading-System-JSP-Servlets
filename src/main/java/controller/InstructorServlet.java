@@ -35,33 +35,35 @@ public class InstructorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getServletPath();
-
-        System.out.println(action);
-        switch (action) {
-            case "/instructor_courses":
-                showCourses(request, response);
-                break;
-            case "/instructor_course_details":
-                viewCourseDetails(request, response);
-                break;
-            case "/withdraw_course":
-                withdrawCourse(request, response);
-                break;
-            case "/update_grade":
-                updateStudentGrade(request, response);
-                break;
-            case "/remove_student":
-                removeStudent(request, response);
-                break;
-            case "/instructor_available_courses":
-                viewAvailableCoursesToTeach(request, response);
-                break;
-            case "/teach_course":
-                teachNewCourse(request, response);
-                break;
-            case "/instructor_profile":
-                viewProfile(request, response);
-                break;
+        if (validate(request, response)) {
+            response.sendRedirect("login");
+        } else {
+            switch (action) {
+                case "/instructor_courses":
+                    showCourses(request, response);
+                    break;
+                case "/instructor_course_details":
+                    viewCourseDetails(request, response);
+                    break;
+                case "/withdraw_course":
+                    withdrawCourse(request, response);
+                    break;
+                case "/update_grade":
+                    updateStudentGrade(request, response);
+                    break;
+                case "/remove_student":
+                    removeStudent(request, response);
+                    break;
+                case "/instructor_available_courses":
+                    viewAvailableCoursesToTeach(request, response);
+                    break;
+                case "/teach_course":
+                    teachNewCourse(request, response);
+                    break;
+                case "/instructor_profile":
+                    viewProfile(request, response);
+                    break;
+            }
         }
     }
 
@@ -80,7 +82,6 @@ public class InstructorServlet extends HttpServlet {
         Instructor instructor = (Instructor) session.getAttribute("instructor");
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         int instructorId = Integer.parseInt(request.getParameter("instructorId"));
-
         List<ConnectionUrlParser.Pair<ConnectionUrlParser.Pair<String, Integer>, Student>>  studentListWithMarks = studentService.findStudentsAndGradesByCourseAndInstructorId(courseId, instructorId);
         request.setAttribute("courseId", courseId);
         request.setAttribute("instructorId", instructor);
@@ -123,9 +124,11 @@ public class InstructorServlet extends HttpServlet {
     private void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/instructor_profile.jsp").forward(request, response);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    private boolean validate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("instructor") == null) {
+            return true;
+        }
+        return false;
     }
 }

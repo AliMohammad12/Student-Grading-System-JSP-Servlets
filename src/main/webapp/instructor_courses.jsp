@@ -9,6 +9,13 @@
 <body>
 
 <%
+  response.setHeader("Cache-Control", "no-cache");
+  response.setHeader("Cache-Control", "no-store");
+  response.setHeader("Pragma", "no-cache");
+  response.setDateHeader("Expires", 0);
+  if (session.getAttribute("instructor") == null) {
+    response.sendRedirect("login");
+  } else {
   List<Course> courseList = (List<Course>) request.getAttribute("courseList");
   Instructor instructor = (Instructor) request.getAttribute("instructor");
 %>
@@ -87,7 +94,7 @@
   </div>
 </section>
 
-
+<%} %>
 
 </body>
 </html>

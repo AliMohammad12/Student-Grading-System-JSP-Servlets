@@ -26,6 +26,13 @@
 </div>
 
 <%
+  response.setHeader("Cache-Control", "no-cache");
+  response.setHeader("Cache-Control", "no-store");
+  response.setHeader("Pragma", "no-cache");
+  response.setDateHeader("Expires", 0);
+  if (session.getAttribute("instructor") == null) {
+    response.sendRedirect("login");
+  } else {
   List<Course> availableCourses = (List<Course>)request.getAttribute("availableCourses");
 %>
 <section class="intro">
@@ -76,7 +83,6 @@
     </div>
   </div>
 </section>
-
-
+<%} %>
 </body>
 </html>

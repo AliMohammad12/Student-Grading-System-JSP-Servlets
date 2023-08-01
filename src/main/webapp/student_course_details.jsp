@@ -31,6 +31,17 @@
 </head>
 <body>
 
+<%
+    response.setHeader("Cache-Control", "no-cache");
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+    if (session.getAttribute("student") == null) {
+        response.sendRedirect("login");
+    } else {
+        StudentCourse studentCourse = (StudentCourse)request.getAttribute("courseToView");
+%>
+
 <div class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="row">
@@ -42,17 +53,13 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="student_profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-                        <li><a href="student_logout"><span class="glyphicon glyphicon-log-in"></span> Logout <span></span></a></li>
+                        <li><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout <span></span></a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<%
-    StudentCourse studentCourse = (StudentCourse)request.getAttribute("courseToView");
-%>
 
 
 <div class="container mt-4">
@@ -85,6 +92,6 @@
     </div>
 </div>
 
-
+<% }%>
 </body>
 </html>

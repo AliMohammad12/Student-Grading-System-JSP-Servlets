@@ -29,7 +29,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="student_profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-                        <li><a href="student_logout"><span class="glyphicon glyphicon-log-in"></span> Logout <span></span></a></li>
+                        <li><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout <span></span></a></li>
                     </ul>
                 </div>
             </div>
@@ -38,8 +38,14 @@
 </div>
 
 <%
+    response.setHeader("Cache-Control", "no-cache");
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+    if (session.getAttribute("student") == null) {
+        response.sendRedirect("login");
+    } else {
     Map<Course, List<Instructor>> allAvailableCourses = (Map<Course, List<Instructor>>) request.getAttribute("availableCourses");
-    System.out.println(allAvailableCourses.size());
 %>
 
 <section class="intro">
@@ -100,6 +106,6 @@
         </div>
     </div>
 </section>
-
+<% }%>
 </body>
 </html>

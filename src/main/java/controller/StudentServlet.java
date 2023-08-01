@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet(urlPatterns = {"/student_courses", "/student_course_details",
-        "/student_withdraw_course", "/student_available_courses", "/student_enroll", "/student_profile", "/student_logout"})
+        "/student_withdraw_course", "/student_available_courses", "/student_enroll", "/student_profile"})
 public class StudentServlet extends HttpServlet {
     private CourseService courseService;
 
@@ -27,33 +27,31 @@ public class StudentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getServletPath();
-
-
-        switch (action) {
-            case "/student_courses":
-                showCourses(request, response);
-                break;
-            case "/student_course_details":
-                viewCourseDetails(request, response);
-                break;
-            case "/student_withdraw_course":
-                withdrawCourse(request, response);
-                break;
-            case "/student_available_courses":
-                showAvailableCourses(request, response);
-                break;
-            case "/student_enroll":
-                enrollInACourse(request, response);
-                break;
-            case "/student_profile":
-                viewProfile(request, response);
-                break;
-            case "/student_logout":
-                logout(request, response);
-                break;
+        if (validate(request, response)) {
+            response.sendRedirect("login");
+        } else {
+            switch (action) {
+                case "/student_courses":
+                    showCourses(request, response);
+                    break;
+                case "/student_course_details":
+                    viewCourseDetails(request, response);
+                    break;
+                case "/student_withdraw_course":
+                    withdrawCourse(request, response);
+                    break;
+                case "/student_available_courses":
+                    showAvailableCourses(request, response);
+                    break;
+                case "/student_enroll":
+                    enrollInACourse(request, response);
+                    break;
+                case "/student_profile":
+                    viewProfile(request, response);
+                    break;
+            }
         }
     }
-
     private void showCourses(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Student student = (Student) session.getAttribute("student");
@@ -68,7 +66,6 @@ public class StudentServlet extends HttpServlet {
     private void viewCourseDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         int studentId = Integer.parseInt(request.getParameter("studentId"));
-
         StudentCourse studentCourse = null;
         try {
             studentCourse = courseService.getStudentCourseByStudentIdAndCourseId(studentId, courseId);
@@ -77,7 +74,6 @@ public class StudentServlet extends HttpServlet {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
         request.setAttribute("courseToView", studentCourse);
         request.getRequestDispatcher("/student_course_details.jsp").forward(request, response);
     }
@@ -112,13 +108,11 @@ public class StudentServlet extends HttpServlet {
         request.getRequestDispatcher("/student_profile.jsp").forward(request, response);
     }
 
-    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private boolean validate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        session.invalidate();
-        response.sendRedirect("login");
-    }
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        if (session.getAttribute("student") == null) {
+            return true;
+        }
+        return false;
     }
 }

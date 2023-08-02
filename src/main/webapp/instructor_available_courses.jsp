@@ -4,20 +4,37 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <style>
+    .navbar-inverse {
+      background-color: #8B0000;
+    }
+    .navbar-inverse .navbar-nav > li > a {
+      color: white;
+    }
+    .navbar-text.welcome-message {
+      color: white;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
+
 <div class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12">
         <div class="navbar-collapse collapse" id="mobile_menu">
           <ul class="nav navbar-nav">
-            <li><a href="instructor_courses"><span class="glyphicon glyphicon-menu-hamburger"></span> Courses </a></li>
-            <li><a href="instructor_available_courses"><span class="glyphicon glyphicon-plus"></span>  Teach New Course ? </a></li>
+            <li class="navbar-brand" style="font-weight: bold; color: white;">Welcome Instructor</li>
+          </ul>
+          <ul class="nav navbar-nav">
+            <li><a href="instructor_courses"><span class="glyphicon glyphicon-menu-hamburger"></span> Courses</a></li>
+            <li><a href="instructor_available_courses"><span class="glyphicon glyphicon-plus"></span> Teach New Course?</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="instructor_profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-            <li><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout <span></span></a></li>
+            <li><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
           </ul>
         </div>
       </div>
@@ -35,6 +52,7 @@
   } else {
   List<Course> availableCourses = (List<Course>)request.getAttribute("availableCourses");
 %>
+
 <section class="intro">
   <div class="bg-image h-100" style="background-color: #fff;">
     <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0,0,0,.25);">
@@ -45,7 +63,7 @@
               <div class="card-body">
                 <div class="table-responsive">
                   <table class="table table-dark table-borderless mb-0">
-                    <caption style="caption-side: top; text-align: center; font-weight: bold; font-size: 18px;"> Available Courses To Teach From Your Department </caption>
+                    <caption style="caption-side: top; text-align: center; font-weight: bold; font-size: 18px; color: black;"> Available Courses To Teach From Your Department </caption>
                     <br>
                     <thead>
                     <tr>

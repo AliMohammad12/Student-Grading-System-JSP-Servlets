@@ -140,7 +140,7 @@
                     </div>
                 </form>
                 <div class="text-center text-lg-start mt-4 pt-2">
-                    <p class="small fw-bold mt-2 pt-1 mb-0" style="display: inline-block; margin-left: 10px;">Already have an account? <a href="/StudentGradingSystem/login_page.jsp" class="link-danger">Login</a></p>
+                    <p class="small fw-bold mt-2 pt-1 mb-0" style="display: inline-block; margin-left: 10px;">Already have an account? <a href="login" class="link-danger">Login</a></p>
                 </div>
             </div>
         </div>

@@ -11,10 +11,8 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/student_grading_system_db";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
-
     private Connection getConnection() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
-
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
     public void createDepartment(Department department){
@@ -22,17 +20,13 @@ public class DepartmentDAOImpl implements DepartmentDAO {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, department.getName());
-
             statement.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("Sorry, we encountered an issue while creating your request. Please try again later.");
         }
     }
-    public Department getDepartmentById(int departmentId) {
-        return null;
-    }
-    public List<Department> getAllDepartments() throws ClassNotFoundException {
+    public List<Department> getAllDepartments() {
         List<Department> departments = new ArrayList<>();
         String query ="SELECT id, department_name FROM department";
         try (Connection connection = getConnection();
@@ -47,6 +41,8 @@ public class DepartmentDAOImpl implements DepartmentDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         return departments;
     }
@@ -72,9 +68,6 @@ public class DepartmentDAOImpl implements DepartmentDAO {
             System.out.println("Sorry, we encountered an issue while creating your request. Please try again later.");
             return null;
         }
-    }
-    public void updateDepartment(Department department) {
-
     }
     public void deleteDepartment(int departmentId) {
         String query = "DELETE FROM department WHERE id = ?";

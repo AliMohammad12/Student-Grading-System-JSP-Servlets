@@ -23,7 +23,6 @@ import java.util.List;
 public class InstructorServlet extends HttpServlet {
     private CourseService courseService;
     private StudentService studentService;
-
     @Override
     public void init() {
         CourseDAO courseDAO = new CourseDAOImpl();
@@ -66,7 +65,6 @@ public class InstructorServlet extends HttpServlet {
             }
         }
     }
-
     private void showCourses(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Instructor instructor = (Instructor) session.getAttribute("instructor");
@@ -75,8 +73,6 @@ public class InstructorServlet extends HttpServlet {
         request.setAttribute("courseList", courseList);
         request.getRequestDispatcher("/instructor_courses.jsp").forward(request, response);
     }
-
-
     private void viewCourseDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Instructor instructor = (Instructor) session.getAttribute("instructor");
@@ -88,14 +84,12 @@ public class InstructorServlet extends HttpServlet {
         request.setAttribute("studentListWithMarks", studentListWithMarks);
         request.getRequestDispatcher("/instructor_course_details.jsp").forward(request, response);
     }
-
     private void updateStudentGrade(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int studentCourseId = Integer.parseInt(request.getParameter("studentCourseId"));
         String newGrade = request.getParameter("grades");
         courseService.updateStudentCourseGradeById(studentCourseId, newGrade);
         response.sendRedirect("instructor_courses");
     }
-
     private void removeStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int studentCourseId = Integer.parseInt(request.getParameter("studentCourseId"));
         courseService.deleteStudentCourseById(studentCourseId);

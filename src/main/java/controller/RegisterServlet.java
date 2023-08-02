@@ -44,12 +44,10 @@ public class RegisterServlet extends HttpServlet {
         DepartmentDAO departmentDAO = new DepartmentDAOImpl();
         departmentService = new DepartmentService(departmentDAO);
     }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         redirectToRegistrationPage(request, response);
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
@@ -80,12 +78,7 @@ public class RegisterServlet extends HttpServlet {
         request.getRequestDispatcher("/login_page.jsp").forward(request, response);
     }
     private void redirectToRegistrationPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Department> departments = null;
-        try {
-            departments = departmentService.getAllDepartments();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        List<Department> departments = departments = departmentService.getAllDepartments();
         request.setAttribute("departments", departments);
         request.getRequestDispatcher("/register_page.jsp").forward(request, response);
     }

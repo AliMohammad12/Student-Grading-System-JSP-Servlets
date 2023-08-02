@@ -5,7 +5,6 @@ import model.Account;
 
 public class AccountService {
     private AccountDAO accountDao;
-
     public AccountService(AccountDAO accountDao) {
         this.accountDao = accountDao;
     }
@@ -21,10 +20,6 @@ public class AccountService {
     public int getAccountIdByEmail(String email) {
         return accountDao.getAccountIdByEmail(email);
     }
-    public void updateAccount(Account account) {
-        accountDao.updateAccount(account);
-    }
-
     public void deleteAccount(int accountId) {
         accountDao.deleteAccount(accountId);
     }

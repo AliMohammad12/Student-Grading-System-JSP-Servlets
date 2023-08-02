@@ -49,7 +49,9 @@ public class LoginServlet extends HttpServlet {
         if (isValidCredentials(account, password)) {
             String role = account.getRole();
             if (role.equals("ADMIN")) {
-                response.sendRedirect(request.getContextPath() + "/admin_page.jsp");
+                HttpSession session = request.getSession();
+                session.setAttribute("admin", account);
+                response.sendRedirect("admin_dashboard");
             } else if (role.equals("Student")) {
                 Student student = studentService.getStudentByAccountId(accountId);
                 HttpSession session = request.getSession();
@@ -62,13 +64,11 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("instructor_courses");
             }
         } else {
-            request.getRequestDispatcher("/login_page.jsp").forward(request, response);
+            response.sendRedirect("login");
         }
     }
-
     private boolean isValidCredentials(Account account, String enteredPassword) {
         if (account == null) return false;
         return PasswordHasher.verifyPassword(account.getHashedPassword(), enteredPassword);
     }
-
 }

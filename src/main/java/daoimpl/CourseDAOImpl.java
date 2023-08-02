@@ -13,12 +13,10 @@ public class CourseDAOImpl implements CourseDAO {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/student_grading_system_db";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
-
     private Connection getConnection() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
-
     public void createCourse(Course course) {
         String query = "INSERT INTO course (department_id, course_name) VALUES (?, ?)";
         try (Connection connection = getConnection();
@@ -32,10 +30,6 @@ public class CourseDAOImpl implements CourseDAO {
             System.out.println("Sorry, we encountered an issue while creating your request. Please try again later.");
         }
     }
-    public Course getCourseById(int courseId) {
-        return null;
-    }
-
     public Map<Course, List<Instructor>> getCoursesNotEnrolledByStudent(Student student) {
         String query = "SELECT " +
                 "c.id AS Course_ID, " +
@@ -57,10 +51,8 @@ public class CourseDAOImpl implements CourseDAO {
         Map<Course, List<Instructor>> coursesWithInstructors = new HashMap<>();
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
-
             statement.setInt(1, student.getStudentId());
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
                 int courseId = resultSet.getInt("Course_ID");
                 String courseName = resultSet.getString("Course_Name");
@@ -91,25 +83,11 @@ public class CourseDAOImpl implements CourseDAO {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-//
-//        for (Map.Entry<Course, List<Instructor>> entry : coursesWithInstructors.entrySet()) {
-//            Course course = entry.getKey();
-//            List<Instructor> instructors = entry.getValue();
-//
-//            System.out.println("Course: " + course.getCourseName() + " | Department: " + course.getDepartment().getName());
-//            System.out.println("Instructors:");
-//
-//            for (Instructor instructor : instructors) {
-//                System.out.println(" - " + instructor.toString());
-//            }
-//            System.out.println();
-//        }
         return coursesWithInstructors;
     }
 
     public void enrollStudentInCourse(int courseId, int instructorId, int studentId) {
         String query = "INSERT INTO student_courses (student_id, course_id, instructor_id) VALUES (?, ?, ?)";
-
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, studentId);
@@ -122,57 +100,13 @@ public class CourseDAOImpl implements CourseDAO {
             System.out.println("Sorry, we encountered an issue while creating your request. Please try again later.");
         }
     }
-
-//    public List<StudentCourse> getStudentCourses(Student student) {
-//        List<StudentCourse> studentCoursesList = new ArrayList<>();
-//        String query = "SELECT " +
-//                "sc.id AS Student_Course_ID, " +
-//                "sc.course_id AS Course_ID, " +
-//                "c.course_name AS Course_Name, " +
-//                "c.department_id AS Department_ID, " +
-//                "d.department_name AS Department_Name, " +
-//                "sc.grade AS Grade, " +
-//                "sc.instructor_id AS Instructor_ID " +
-//                "FROM student_courses sc " +
-//                "JOIN course c ON sc.course_id = c.id " +
-//                "JOIN department d ON c.department_id = d.id " +
-//                "WHERE sc.student_id = ?";
-//
-//        try (Connection connection = getConnection()) {
-//            try (PreparedStatement statement = connection.prepareStatement(query)) {
-//                statement.setInt(1, student.getStudentId());
-//                try (ResultSet resultSet = statement.executeQuery()) {
-//                    while (resultSet.next()) {
-//                        int studentCourseId = resultSet.getInt("Student_Course_ID");
-//                        int courseId = resultSet.getInt("Course_ID");
-//                        String courseName = resultSet.getString("Course_Name");
-//                        int departmentId = resultSet.getInt("Department_ID");
-//                        String departmentName = resultSet.getString("Department_Name");
-//                        int instructorId = resultSet.getInt("Instructor_ID");
-//                        String grade = resultSet.getString("Grade");
-//
-//                        Department department = new Department(departmentName);
-//                        department.setId(departmentId);
-//                        Course course = new Course(courseName, department);
-//                        course.setCourseId(courseId);
-//                        StudentCourse studentCourse = new StudentCourse(student.getStudentId(), instructorId, course, grade, studentCourseId);
-//                        studentCoursesList.add(studentCourse);
-//                    }
-//                }
-//            }
-//        } catch (SQLException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return studentCoursesList;
-//    }
-
     public void deleteStudentCourse(int studentId, int courseId) {
         String query = "DELETE FROM student_courses WHERE student_id = ? AND course_id = ?";
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, studentId);
                 statement.setInt(2, courseId);
-                int rowsAffected = statement.executeUpdate();
+                statement.executeUpdate();
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -212,8 +146,6 @@ public class CourseDAOImpl implements CourseDAO {
         }
         return studentCourseList;
     }
-
-
     public List<Course> getAllInstructorCourses(Instructor instructor) {
         String query = "SELECT " +
                 "c.id AS Course_ID, " +
@@ -224,7 +156,6 @@ public class CourseDAOImpl implements CourseDAO {
                 "JOIN course c ON ic.course_id = c.id " +
                 "JOIN department d ON c.department_id = d.id " +
                 "WHERE ic.instructor_id = ?";
-
         List<Course> instructorCourses = new ArrayList<>();
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -235,13 +166,10 @@ public class CourseDAOImpl implements CourseDAO {
                         String courseName = resultSet.getString("Course_Name");
                         int departmentId = resultSet.getInt("Department_ID");
                         String departmentName = resultSet.getString("Department_Name");
-
                         Department department = new Department(departmentName);
                         department.setId(departmentId);
-
                         Course course = new Course(courseName, department);
                         course.setCourseId(courseId);
-
                         instructorCourses.add(course);
                     }
                 }
@@ -251,9 +179,6 @@ public class CourseDAOImpl implements CourseDAO {
         }
         return instructorCourses;
     }
-
-
-
     public List<Course> getUnassignedCoursesFromSameDept(Instructor instructor) {
         String query = "SELECT " +
                 "c.id AS Course_ID, " +
@@ -270,7 +195,6 @@ public class CourseDAOImpl implements CourseDAO {
                 int instructorId = instructor.getInstructorId();
                 statement.setInt(1, instructorId);
                 statement.setInt(2, instructorId);
-
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         int courseId = resultSet.getInt("Course_ID");
@@ -290,8 +214,6 @@ public class CourseDAOImpl implements CourseDAO {
         }
         return unassignedCourses;
     }
-
-
     public void assignCourseToInstructor(int courseId, int instructorId) {
         String query = "INSERT INTO instructor_courses (instructor_id, course_id) VALUES (?, ?)";
         try (Connection connection = getConnection();
@@ -305,7 +227,6 @@ public class CourseDAOImpl implements CourseDAO {
             System.out.println("Sorry, we encountered an issue while creating your request. Please try again later.");
         }
     }
-
     public void removeCourseFromInstructor(int courseId, int instructorId) {
         String query = "DELETE FROM instructor_courses WHERE instructor_id = ? AND course_id = ?";
         try (Connection connection = getConnection();
@@ -318,33 +239,6 @@ public class CourseDAOImpl implements CourseDAO {
             e.printStackTrace();
         }
     }
-
-
-//    public StudentCourse getStudentCourse(Student student, Course course, Instructor instructor) {
-//        String query = "SELECT id, grade FROM student_courses WHERE student_id = ? AND course_id = ? AND instructor_id = ?";
-//        try (Connection connection = getConnection();
-//             PreparedStatement statement = connection.prepareStatement(query)) {
-//            statement.setInt(1, student.getStudentId());
-//            statement.setInt(2, course.getCourseId());
-//            statement.setInt(3, instructor.getInstructorId());
-//
-//            try (ResultSet resultSet = statement.executeQuery()) {
-//                if (resultSet.next()) {
-//                    int studentCourseId = resultSet.getInt("id");
-//                    String grade = resultSet.getString("grade");
-//                    StudentCourse studentCourse = new StudentCourse(student.getStudentId(),
-//                            instructor.getInstructorId(), course, grade, studentCourseId);
-//
-//                    return studentCourse;
-//                }
-//            }
-//        } catch (SQLException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-
     public void updateStudentCourseGradeById(int studentCourseId, String newGrade) {
         String query = "UPDATE student_courses SET grade = ? WHERE id = ?";
         try (Connection connection = getConnection();
@@ -365,7 +259,6 @@ public class CourseDAOImpl implements CourseDAO {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
-
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 int departmentId = resultSet.getInt("department_id");
@@ -417,62 +310,8 @@ public class CourseDAOImpl implements CourseDAO {
                 StudentCourse studentCourse = new StudentCourse(id, studentId, instructor, course, grade);
                 return studentCourse;
             }
-
         }
-
         return null;
-    }
-
-//    public List<StudentCourse> getStudentCoursesByStudentId(int studentId) throws SQLException, ClassNotFoundException {
-//        List<StudentCourse> studentCourses = new ArrayList<>();
-//        String query = "SELECT " +
-//                "sc.id AS student_course_id, " +
-//                "c.id AS course_id, " +
-//                "c.course_name AS course_name, " +
-//                "d.id AS department_id, " +
-//                "d.department_name AS department_name, " +
-//                "i.id AS instructor_id, " +
-//                "sc.grade AS course_grade " +
-//                "FROM " +
-//                "student_courses sc " +
-//                "JOIN course c ON sc.course_id = c.id " +
-//                "JOIN department d ON c.department_id = d.id " +
-//                "JOIN instructor_courses ic ON sc.course_id = ic.course_id " +
-//                "JOIN instructor i ON ic.instructor_id = i.id " +
-//                "WHERE sc.student_id = ?";
-//
-//        try (Connection connection = getConnection();
-//             PreparedStatement statement = connection.prepareStatement(query)) {
-//            statement.setInt(1, studentId);
-//            try (ResultSet resultSet = statement.executeQuery()) {
-//                while (resultSet.next()) {
-//                    int studentCourseId = resultSet.getInt("student_course_id");
-//                    int courseId = resultSet.getInt("course_id");
-//                    String courseName = resultSet.getString("course_name");
-//                    int departmentId = resultSet.getInt("department_id");
-//                    String departmentName = resultSet.getString("department_name");
-//                    int instructorId = resultSet.getInt("instructor_id");
-//                    String grade = resultSet.getString("course_grade");
-//
-//                    Department department = new Department(departmentName);
-//                    department.setId(departmentId);
-//                    Course course = new Course(courseName, department);
-//                    course.setCourseId(courseId);
-//
-//                    StudentCourse studentCourse = new StudentCourse(studentCourseId, instructorId, course, grade, studentCourseId);
-//                    studentCourses.add(studentCourse);
-//                }
-//            }
-//        }
-//        return studentCourses;
-//    }
-
-
-    public List<Course> getCoursesByDepartment(int departmentId) {
-        return null;
-    }
-
-    public void updateCourse(Course course) {
     }
     public void deleteCourse(int courseId) {
         String query = "DELETE FROM course WHERE id = ?";
@@ -518,7 +357,6 @@ public class CourseDAOImpl implements CourseDAO {
             e.printStackTrace();
         }
     }
-
     public void deleteStudentCourseById(int studentCourseId) {
         String query = "DELETE FROM student_courses WHERE id = ?";
         try (Connection connection = getConnection()) {
@@ -530,6 +368,4 @@ public class CourseDAOImpl implements CourseDAO {
             e.printStackTrace();
         }
     }
-
-
 }

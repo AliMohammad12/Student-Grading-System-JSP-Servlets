@@ -5,6 +5,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .navbar-inverse {
+            background-color: #1E3859;
+        }
+
+        .navbar-inverse .navbar-nav > li > a {
+            color: #EAEAEA;
+        }
+
+        .navbar-text.welcome-message {
+            color: white;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,15 +34,20 @@
     Student student = (Student) request.getAttribute("student");
 %>
 
+
 <div class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <div class="navbar-collapse collapse" id="mobile_menu">
                     <ul class="nav navbar-nav">
+                        <li class="navbar-brand" style="font-weight: bold; color: white;">Welcome Student</li>
+                    </ul>
+                    <ul class="nav navbar-nav">
                         <li><a href="student_courses"><span class="glyphicon glyphicon-menu-hamburger"></span> Courses </a></li>
                         <li><a href="student_available_courses"><span class="glyphicon glyphicon-plus"></span> Enroll New Course </a></li>
                     </ul>
+
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="student_profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                         <li><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout <span></span></a></li>
@@ -49,7 +68,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-dark table-borderless mb-0">
-                                        <caption style="caption-side: top; text-align: center; font-weight: bold; font-size: 18px;">Your Courses List</caption>
+                                        <caption style="caption-side: top; text-align: center; font-weight: bold; font-size: 18px;  color: black;">Your Courses List</caption>
                                         <thead>
                                         <tr>
                                             <th scope="col"> ID </th>

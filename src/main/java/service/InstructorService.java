@@ -11,16 +11,9 @@ public class InstructorService {
     public InstructorService(InstructorDAO instructorDao) {
         this.instructorDao = instructorDao;
     }
-
     public void createInstructor(Instructor instructor) {
         instructorDao.createInstructor(instructor);
     }
-
-
-    public Instructor getInstructorById(int instructorId) {
-        return instructorDao.getInstructorById(instructorId);
-    }
-
     public List<Instructor> getAllInstructors() {
         return instructorDao.getAllInstructors();
     }
@@ -30,9 +23,7 @@ public class InstructorService {
     public List<Instructor> getInstructorsByDepartment(int departmentId) {
         return getInstructorsByDepartment(departmentId);
     }
-
     public void deleteInstructor(int instructorId) {
         instructorDao.deleteInstructor(instructorId);
     }
-
 }

@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instructor Profile</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .navbar-inverse {
+            background-color: #8B0000;
+        }
+
+        .navbar-inverse .navbar-nav > li > a {
+            color: white;
+        }
+        .navbar-text.welcome-message {
+            color: white;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
@@ -14,6 +27,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="navbar-collapse collapse" id="mobile_menu">
+                    <ul class="nav navbar-nav">
+                        <li class="navbar-brand" style="font-weight: bold; color: white;">Welcome Instructor</li>
+                    </ul>
                     <ul class="nav navbar-nav">
                         <li><a href="instructor_courses"><span class="glyphicon glyphicon-menu-hamburger"></span> Courses</a></li>
                         <li><a href="instructor_available_courses"><span class="glyphicon glyphicon-plus"></span> Teach New Course?</a></li>

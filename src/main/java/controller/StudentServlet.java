@@ -18,7 +18,6 @@ import java.util.Map;
         "/student_withdraw_course", "/student_available_courses", "/student_enroll", "/student_profile"})
 public class StudentServlet extends HttpServlet {
     private CourseService courseService;
-
     @Override
     public void init() {
         CourseDAO courseDAO = new CourseDAOImpl();
@@ -62,7 +61,6 @@ public class StudentServlet extends HttpServlet {
         request.setAttribute("courseList", courseList);
         request.getRequestDispatcher("student_courses.jsp").forward(request, response);
     }
-
     private void viewCourseDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         int studentId = Integer.parseInt(request.getParameter("studentId"));
@@ -77,14 +75,12 @@ public class StudentServlet extends HttpServlet {
         request.setAttribute("courseToView", studentCourse);
         request.getRequestDispatcher("/student_course_details.jsp").forward(request, response);
     }
-
     private void withdrawCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         int studentId = Integer.parseInt(request.getParameter("studentId"));
         courseService.deleteStudentCourse(studentId, courseId);
         response.sendRedirect("student_courses");
     }
-
     private void showAvailableCourses(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         Student student = (Student) session.getAttribute("student");
@@ -100,14 +96,12 @@ public class StudentServlet extends HttpServlet {
         courseService.enrollStudentInCourse(courseId, instructorId, student.getStudentId());
         response.sendRedirect("student_courses");
     }
-
     private void viewProfile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         Student student = (Student) session.getAttribute("student");
         request.setAttribute("student", student);
         request.getRequestDispatcher("/student_profile.jsp").forward(request, response);
     }
-
     private boolean validate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("student") == null) {
